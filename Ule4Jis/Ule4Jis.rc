@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 日本語 resources
+// 日本語 (日本) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
-#ifdef _WIN32
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 #pragma code_page(932)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -65,7 +63,13 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\Ule4Jis.ico"
+
 IDR_ICON_JIS            ICON                    "res\\icon1.ico"
+
+IDR_ICON_KEYBOARD       ICON                    "res\\keyboard.ico"
+
+IDR_ICON_REMOTE         ICON                    "res\\remote.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -140,7 +144,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
@@ -166,13 +170,16 @@ END
 // Menu
 //
 
-IDR_MENU_TASKTRAY MENU 
+IDR_MENU_TASKTRAY MENU
 BEGIN
     POPUP "dummy"
     BEGIN
         MENUITEM "エミュレーション開始(&S)",              ID_TASKTRAY_START
         MENUITEM "エミュレーション停止(&E)",              ID_TASKTRAY_STOP
         MENUITEM "エミュレーター再起動(&R)",              ID_TASKTRAY_RESTART
+        MENUITEM SEPARATOR
+        MENUITEM "リモート接続",                      ID_STRATEGY_REMOTE
+        MENUITEM "キーボード接続",                     ID_STRATEGY_KEYBOARD
         MENUITEM SEPARATOR
         MENUITEM "終了(&X)",                      ID_TASKTRAY_EXIT
     END
@@ -193,13 +200,13 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUTBOX            "バージョン情報 Ule4Jis(&A)..."
     IDS_MSG_MULTIPLE_BOOT_ERROR "既に起動されています。"
 END
 
-#endif    // 日本語 resources
+#endif    // 日本語 (日本) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

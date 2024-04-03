@@ -20,14 +20,17 @@ public:
 
 private:
 	// added
-	enum Strategy { USonJIS, JISonUS };
+	enum Strategy { USonJISKeyboard, USonJISRemote };
 	NOTIFYICONDATA notifyIconData;
 	Strategy currentStrategy;
 
 	void showTaskTrayPopupMenu();
 	void changeTaskTrayIconToUS();
 	void changeTaskTrayIconToJIS();
-
+	void changeTaskTrayIconToRemote();
+	void changeTaskTrayIconToKeyboard();
+	void changeStorategyToRemote();
+	void changeStorategyToKeyboard();
 // ŽÀ‘•
 protected:
 	HICON m_hIcon;

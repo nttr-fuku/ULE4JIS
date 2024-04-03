@@ -6,6 +6,8 @@
 #include "Ule4JisDlg.h"
 #include "KeyEmulator.h"
 #include "USonJISStrategy.h"
+#include "USonJISRemoteStrategy.h"
+#include "USonJISKeyboardStrategy.h"
 #include "Constants.h"
 #include "afxwin.h"
 
@@ -140,7 +142,7 @@ BOOL Ule4JisDlg::OnInitDialog()
 	this->keyEmulator->start();
 
 	// save current strategy type
-	this->currentStrategy = USonJIS;
+	this->currentStrategy = USonJISRemote;
 
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
@@ -239,6 +241,17 @@ LRESULT Ule4JisDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 		case ID_TASKTRAY_EXIT:
 			::PostQuitMessage(0);
 			break;
+		case ID_STRATEGY_REMOTE:
+			this->keyEmulator->end();
+			changeStorategyToRemote();
+			this->keyEmulator->start();
+			changeTaskTrayIconToRemote();
+			break;
+		case ID_STRATEGY_KEYBOARD:
+			this->keyEmulator->end();
+			changeStorategyToKeyboard();
+			this->keyEmulator->start();
+			changeTaskTrayIconToKeyboard();
 		default:
 			break;
 		}
@@ -256,6 +269,26 @@ void Ule4JisDlg::changeTaskTrayIconToJIS() {
 	this->notifyIconData.hIcon = ::AfxGetApp()->LoadIcon(IDR_ICON_JIS);
 	::Shell_NotifyIcon(NIM_MODIFY, &this->notifyIconData);
 }
+void Ule4JisDlg::changeTaskTrayIconToRemote() {
+	this->notifyIconData.hIcon = ::AfxGetApp()->LoadIcon(IDR_ICON_REMOTE);
+	::Shell_NotifyIcon(NIM_MODIFY, &this->notifyIconData);
+}
+void Ule4JisDlg::changeTaskTrayIconToKeyboard() {
+	this->notifyIconData.hIcon = ::AfxGetApp()->LoadIcon(IDR_ICON_KEYBOARD);
+	::Shell_NotifyIcon(NIM_MODIFY, &this->notifyIconData);
+}
+
+void Ule4JisDlg::changeStorategyToRemote() {
+	USonJISRemoteStrategy strategy;
+	this->keyEmulator.reset(new KeyEmulator(&strategy));
+	this->currentStrategy = USonJISRemote;
+}
+void Ule4JisDlg::changeStorategyToKeyboard() {
+	USonJISKeyboardStrategy strategy;
+	this->keyEmulator.reset(new KeyEmulator(&strategy));
+	this->currentStrategy = USonJISKeyboard;
+}
+
 
 void Ule4JisDlg::showTaskTrayPopupMenu() {
 	CPoint point;
@@ -271,6 +304,12 @@ void Ule4JisDlg::showTaskTrayPopupMenu() {
 		subMenu->EnableMenuItem(ID_TASKTRAY_START, MF_GRAYED);
 	} else {
 		subMenu->EnableMenuItem(ID_TASKTRAY_STOP, MF_GRAYED);
+	}
+
+	if (this->currentStrategy == USonJISRemote) {
+		subMenu->EnableMenuItem(ID_STRATEGY_REMOTE, MF_GRAYED);
+	} else {
+		subMenu->EnableMenuItem(ID_STRATEGY_KEYBOARD, MF_GRAYED);
 	}
 
 	//if (this->currentStrategy == USonJIS) {
